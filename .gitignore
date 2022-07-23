@@ -6,3 +6,4 @@ venv
 
 # Data
 *.csv
+*.sqlite3
