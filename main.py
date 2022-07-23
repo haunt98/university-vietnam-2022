@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import argparse
+import sqlite3
 
 subjectToan = "Toán"
 subjectLi = "Lí"
@@ -94,10 +95,51 @@ def getListFromVietnamnet(sbdStart, sbdEnd):
         gddtWhere = convertSBDToStr(sbd)[:2]
 
         singleResult = [convertSBDToStr(sbd), gddtWhere, mapResult]
-        print(singleResult)
+        # print(singleResult)
         results.append(singleResult)
 
     return results
+
+
+# Same as getListFromVietnamnet but with SQlite
+def writeSQLiteListFromVietnamnetThen(conn, sbdStart, sbdEnd):
+    cur = conn.cursor()
+
+    for sbd in range(sbdStart, sbdEnd + 1):
+        rows = cur.execute(
+            """SELECT * FROM university_vietnam_2022 WHERE sbd = ?""",
+            (convertSBDToStr(sbd),),
+        ).fetchall()
+        if len(rows) >= 1:
+            print("WARNING: sbd already exist in SQLite", sbd)
+            continue
+
+        exist, mapResult = getSingleFromVietnamnet(sbd)
+        if not exist:
+            print("WARNING: sbd not exist", sbd)
+            continue
+
+        # Ma so gddt
+        gddtWhere = convertSBDToStr(sbd)[:2]
+
+        cur.execute(
+            """INSERT INTO university_vietnam_2022 (sbd, gddt, toan, li, hoa, sinh, van, su, dia, ngoai_ngu, gdcd) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            (
+                convertSBDToStr(sbd),
+                gddtWhere,
+                mapResult.get(subjectToan, 0),
+                mapResult.get(subjectLi, 0),
+                mapResult.get(subjectHoa, 0),
+                mapResult.get(subjectSinh, 0),
+                mapResult.get(subjectVan, 0),
+                mapResult.get(subjectSu, 0),
+                mapResult.get(subjectDia, 0),
+                mapResult.get(subjectNgoaiNgu, 0),
+                mapResult.get(subjectGDCD, 0),
+            ),
+        )
+
+        conn.commit()
 
 
 def generateSBD(gdtt):
@@ -158,12 +200,26 @@ def writeCSVVietnamnet(filename, results):
             )
 
 
+def initSQLite(filename):
+    conn = sqlite3.connect(filename)
+
+    cur = conn.cursor()
+
+    cur.execute(
+        """CREATE TABLE IF NOT EXISTS university_vietnam_2022 (sbd text, gddt text, toan real, li real, hoa real, sinh real, van real, su real, dia real, ngoai_ngu real, gdcd real)"""
+    )
+
+    conn.commit()
+
+    return conn
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("gddt", type=int, help="Ma so gddt")
 
     args = parser.parse_args()
-    print(args.gddt)
+    print("gddt", args.gddt)
 
     sbdStart, sbdEndMax = generateSBD(args.gddt)
     sbdEnd = sbdEnds.get(args.gddt, sbdEndMax)
@@ -174,8 +230,15 @@ def main():
         sbdEnd,
     )
 
-    results = getListFromVietnamnet(sbdStart, sbdEnd)
-    writeCSVVietnamnet(str(args.gddt) + ".csv", results)
+    # Write CSV
+    # results = getListFromVietnamnet(sbdStart, sbdEnd)
+    # writeCSVVietnamnet(str(args.gddt) + ".csv", results)
+
+    # Write SQLite
+    csvFilename = str(args.gddt) + ".sqlite3"
+    conn = initSQLite(csvFilename)
+    writeSQLiteListFromVietnamnetThen(conn, sbdStart, sbdEnd)
+    conn.close()
 
 
 if __name__ == "__main__":
