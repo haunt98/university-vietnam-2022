@@ -19,6 +19,8 @@ gddts = {
     51: "an_giang",
     52: "vung_tau",
     55: "can_tho",
+    61: "ca_mau",
+    63: "dak_nong",
     64: "hau_giang",
 }
 
