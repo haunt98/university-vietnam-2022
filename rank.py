@@ -4,23 +4,23 @@ import sqlite3
 # Khoi B = toan + hoa + sinh
 
 # Copy from main.py
-gddts = [
-    2,
-    4,
-    33,
-    37,
-    38,
-    39,
-    41,
-    43,
-    44,
-    47,
-    48,
-    51,
-    52,
-    55,
-    64,
-]
+gddts = {
+    2: "hcm",
+    4: "da_nang",
+    33: "hue",
+    37: "binh_dinh",
+    38: "gia_lai",
+    39: "phu_yen",
+    41: "khanh_hoa",
+    43: "lam_dong",
+    44: "binh_phuoc",
+    47: "binh_duong",
+    48: "dong_nai",
+    51: "an_giang",
+    52: "vung_tau",
+    55: "can_tho",
+    64: "hau_giang",
+}
 
 # Copy from main.py
 def convertSBDToStr(sbd):
@@ -82,7 +82,7 @@ def main():
     exist, sumPoint = getSumPoint(args.sbd)
     if not exist:
         return
-    print(sumPoint)
+    print("sumPoint", sumPoint)
 
     totalCount = 0
     for gddt in gddts:
@@ -90,7 +90,7 @@ def main():
         if not exist:
             continue
         totalCount += count
-        print(gddt, count)
+        print(gddt, gddts[gddt], count)
     print("all", totalCount)
 
 
