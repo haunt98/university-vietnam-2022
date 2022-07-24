@@ -7,7 +7,11 @@ import sqlite3
 gddts = {
     2: "hcm",
     4: "da_nang",
+    32: "quang_tri",
     33: "hue",
+    34: "quang_nam",
+    35: "quang_ngai",
+    36: "kon_tum",
     37: "binh_dinh",
     38: "gia_lai",
     39: "phu_yen",
