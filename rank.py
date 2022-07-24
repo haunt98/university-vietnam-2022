@@ -79,16 +79,25 @@ def countEqualOrGreaterWithSQLite(gddt, sumPoint):
     conn = sqlite3.connect(str(gddt) + ".sqlite3")
     cur = conn.cursor()
 
-    row = cur.execute(
+    totalRow = cur.execute(
+        """SELECT COUNT(*) FROM university_vietnam_2022"""
+    ).fetchone()
+    if not totalRow or len(totalRow) != 1:
+        print("WARNING: failed to count total", gddt)
+        return False, 0, 0
+    # print("totalRow", totalRow)
+
+    equalOrGreaterRow = cur.execute(
         """SELECT COUNT(*) FROM university_vietnam_2022 WHERE (toan + hoa + sinh) >= ?""",
         (sumPoint,),
     ).fetchone()
-    if not row or len(row) != 1:
+    if not equalOrGreaterRow or len(equalOrGreaterRow) != 1:
         print("WARNING: failed to count", gddt)
-        return False, 0
+        return False, 0, 0
+    # print("equalOrGreaterRow", equalOrGreaterRow)
 
     conn.close()
-    return True, int(row[0])
+    return True, int(totalRow[0]), int(equalOrGreaterRow[0])
 
 
 def main():
@@ -103,14 +112,23 @@ def main():
         return
     print("sumPoint", sumPoint)
 
-    totalCount = 0
+    print("gddt", "gddt_name", "totalCount", "equalOrGreaterCount", "ty_le")
+    sumEqualOrGreaterCount = 0
     for gddt in gddts:
-        exist, count = countEqualOrGreaterWithSQLite(gddt, sumPoint)
+        exist, totalCount, equalOrGreaterCount = countEqualOrGreaterWithSQLite(
+            gddt, sumPoint
+        )
         if not exist:
             continue
-        totalCount += count
-        print(gddt, gddts[gddt], count)
-    print("all", totalCount)
+        sumEqualOrGreaterCount += equalOrGreaterCount
+        print(
+            gddt,
+            gddts[gddt],
+            totalCount,
+            equalOrGreaterCount,
+            equalOrGreaterCount / totalCount * 100,
+        )
+    print("all", sumEqualOrGreaterCount)
 
 
 if __name__ == "__main__":
