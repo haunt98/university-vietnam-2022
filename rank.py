@@ -18,6 +18,8 @@ gddts = {
     48: "dong_nai",
     51: "an_giang",
     52: "vung_tau",
+    53: "tien_giang",
+    54: "kien_giang",
     55: "can_tho",
     56: "ben_tre",
     57: "vinh_long",
