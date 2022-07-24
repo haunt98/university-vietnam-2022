@@ -19,6 +19,7 @@ gddts = {
     51: "an_giang",
     52: "vung_tau",
     55: "can_tho",
+    58: "tra_vinh",
     59: "soc_trang",
     60: "bac_lieu",
     61: "ca_mau",
