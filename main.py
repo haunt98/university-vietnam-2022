@@ -14,16 +14,21 @@ subjectNgoaiNgu = "Ngoại ngữ"
 subjectGDCD = "GDCD"
 
 # http://thptbacthanglong.edu.vn/ma-so-giao-duc-tat-ca-tinh-thanh-tren-ca-nuoc-bid1576.html
-gddtDaNang = 4
-gddtBinhdinh = 37
-gddtPhuYen = 39
-gddtVungTau = 52
 sbdEnds = {
-    gddtDaNang: 4013000,
-    # gddtDaNang: 4000010,
-    gddtBinhdinh: 37019000,
-    gddtPhuYen: 39011000,
-    gddtVungTau: 52013000,
+    2: 2090000,
+    4: 4013000,
+    33: 33014000,
+    37: 37019000,
+    38: 38015000,
+    39: 39011000,
+    41: 41015000,
+    44: 44013000,
+    47: 47013000,
+    48: 48032000,
+    51: 51019000,
+    52: 52013000,
+    55: 55013000,
+    64: 64007000,
 }
 
 
