@@ -15,7 +15,9 @@ subjectGDCD = "GDCD"
 
 # http://thptbacthanglong.edu.vn/ma-so-giao-duc-tat-ca-tinh-thanh-tren-ca-nuoc-bid1576.html
 sbdEnds = {
+    1: 1098000,
     2: 2090000,
+    3: 3023000,
     4: 4013000,
     32: 32009000,
     33: 33014000,

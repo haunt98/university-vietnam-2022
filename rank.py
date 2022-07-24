@@ -5,7 +5,9 @@ import sqlite3
 
 # Copy from main.py
 gddts = {
+    1: "ha_noi",
     2: "hcm",
+    3: "hai_phong",
     4: "da_nang",
     32: "quang_tri",
     33: "hue",
