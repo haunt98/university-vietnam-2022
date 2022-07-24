@@ -14,6 +14,7 @@ gddts = {
     41: "khanh_hoa",
     43: "lam_dong",
     44: "binh_phuoc",
+    46: "tay_ninh",
     47: "binh_duong",
     48: "dong_nai",
     49: "long_an",
