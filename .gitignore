@@ -7,3 +7,4 @@ venv
 # Data
 *.csv
 *.sqlite3
+*.txt

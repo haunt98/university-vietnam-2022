@@ -4,7 +4,7 @@ import sqlite3
 # Khoi B = toan + hoa + sinh
 
 # Copy from main.py
-gddts = {
+gddtsName = {
     1: "ha_noi",
     2: "hcm",
     3: "hai_phong",
@@ -24,7 +24,7 @@ gddts = {
     44: "binh_duong",
     45: "ninh_thuan",
     46: "tay_ninh",
-    47: "binh_duong",
+    47: "binh_thuan",
     48: "dong_nai",
     49: "long_an",
     50: "dong_thap",
@@ -41,6 +41,81 @@ gddts = {
     61: "ca_mau",
     63: "dak_nong",
     64: "hau_giang",
+}
+
+gddtsMienNam = {
+    2,
+    4,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    63,
+    64,
+}
+
+gddtsDiemKhuVuc = {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    32: 0.25,
+    33: 0.25,
+    34: 0.25,
+    35: 0.25,
+    36: 0.75,
+    37: 0.25,
+    38: 0.75,
+    39: 0.25,
+    40: 0.75,
+    41: 0.25,
+    42: 0.75,
+    43: 0.5,
+    44: 0.25,
+    45: 0.25,
+    46: 0.25,
+    47: 0.25,
+    48: 0.25,
+    49: 0.25,
+    50: 0.25,
+    51: 0.25,
+    52: 0.25,
+    53: 0.25,
+    54: 0.25,
+    55: 0,
+    56: 0.25,
+    57: 0.25,
+    58: 0.25,
+    59: 0.5,
+    60: 0.25,
+    61: 0.25,
+    63: 0.75,
+    64: 0.25,
 }
 
 # Copy from main.py
@@ -114,21 +189,55 @@ def main():
         return
     print("sumPoint", sumPoint)
 
-    print("gddt", "gddt_name", "totalCount", "equalOrGreaterCount", "ty_le")
+    print(
+        "gddt",
+        "gddt_name",
+        "equal_or_greater_count",
+    )
     sumEqualOrGreaterCount = 0
-    for gddt in gddts:
+    for gddt in gddtsMienNam:
         exist, totalCount, equalOrGreaterCount = countEqualOrGreaterWithSQLite(
             gddt, sumPoint
         )
         if not exist:
             continue
+
         sumEqualOrGreaterCount += equalOrGreaterCount
         print(
             gddt,
-            gddts[gddt],
-            totalCount,
+            gddtsName[gddt],
             equalOrGreaterCount,
-            equalOrGreaterCount / totalCount * 100,
+        )
+    print("all", sumEqualOrGreaterCount)
+    print("---")
+
+    # Diem cong vung mien
+    print("XXX", args.sbd % 1000000)
+    sumPointVungMien = sumPoint + gddtsDiemKhuVuc.get(args.sbd // 1000000, 0)
+    print("sumPointVungMien", sumPointVungMien)
+
+    print(
+        "gddt",
+        "gddt_name",
+        "cong_vung_mien",
+        "equal_or_greater_count",
+    )
+    sumEqualOrGreaterCount = 0
+    for gddt in gddtsName:
+        vungMienOfGDDT = gddtsDiemKhuVuc.get(gddt, 0)
+
+        exist, totalCount, equalOrGreaterCount = countEqualOrGreaterWithSQLite(
+            gddt, sumPointVungMien - vungMienOfGDDT
+        )
+        if not exist:
+            continue
+
+        sumEqualOrGreaterCount += equalOrGreaterCount
+        print(
+            gddt,
+            gddtsName[gddt],
+            vungMienOfGDDT,
+            equalOrGreaterCount,
         )
     print("all", sumEqualOrGreaterCount)
 
